@@ -36,4 +36,18 @@ class MessageController extends AbstractController
 
         ]);
     }
+
+    #[Route("/delete-message/{id}")]
+    public function removeMessage(int $id):Response {
+        $message = $this->repo->findById($id);
+        /**
+         * @var User
+         */
+        $user = $this->getUser();
+        if($user->getId() == $message?->getUser()->getId()){
+            $this->repo->delete($id);
+        }
+
+        return $this->redirect("/");
+    }
 }
